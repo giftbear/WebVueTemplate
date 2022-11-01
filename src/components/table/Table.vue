@@ -1,33 +1,34 @@
 <template>
     <div class="table-wrapper">
         <!-- 表格 -->
-        <el-table          
-            ref="tableDemo"
-            id="tabledemo"
-            :data="tableData"
-            size="mini"
-            :header-cell-style="{'background-color':'#ecf5ff','color':'#409EFF'}"
-            :height="tableHeight"
-            @selection-change="handleSelectRow"
-        >
-            <el-table-column
-                type="selection"
-                width="55"
-                align="center"               
-            ></el-table-column>
-            <template v-for="(item, index) in columnData">
+        <div class="tablelist-wrapper">
+            <el-table  
+                ref="tableDemo"
+                id="tabledemo"
+                :data="tableData"
+                size="mini"            
+                :header-cell-style="{'background-color':'#ecf5ff','color':'#409EFF'}"
+                @selection-change="handleSelectRow"
+            >
                 <el-table-column
-                    :label="item.label" 
-                    :key="item.prop" 
-                    :prop="item.prop"
-                    sortable 
-                    align="center"
-                    show-overflow-tooltip
-                    v-if="selectedColumnList.includes(item.prop)"
-                    :render-header="renderHeader"
+                    type="selection"
+                    width="55"
+                    align="center"               
                 ></el-table-column>
-            </template>
-        </el-table>
+                <template v-for="(item, index) in columnData">
+                    <el-table-column
+                        :label="item.label" 
+                        :key="item.prop" 
+                        :prop="item.prop"
+                        sortable 
+                        align="center"
+                        show-overflow-tooltip
+                        v-if="selectedColumnList.includes(item.prop)"
+                        :render-header="renderHeader"
+                    ></el-table-column>
+                </template>
+            </el-table>
+        </div>
         <!-- 分页 -->
         <div class="pagination-wrapper">
             <div class="current-page-count">Total entries: {{ tableData.length }}</div>
@@ -48,11 +49,11 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'Table',
-    data() {
-        return {
-            tableHeight: 300
-        }
-    },   
+    // data() {
+    //     return {
+    //         tableHeight: 300
+    //     }
+    // },   
     //父组件向子组件传值
     props: {
         //表格数据
@@ -74,16 +75,16 @@ export default {
         //表格动态显隐选择的列
 		...mapGetters(['selectedColumnList']),
     },
-    mounted() {
-        //表格高度屏幕自适应
-        this.$nextTick(()=>{
-            // this.$refs.tableDemo.$el.getBoundingClientRect().top           
-            this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 80     
-            window.onresize = ()=>{
-                this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 80
-            }
-        })
-    },
+    // mounted() {
+    //     //表格高度屏幕自适应
+    //     this.$nextTick(()=>{
+    //         // this.$refs.tableDemo.$el.getBoundingClientRect().top           
+    //         this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 80     
+    //         window.onresize = ()=>{
+    //             this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 80
+    //         }
+    //     })
+    // },
     methods: {
         /**
         * 设置表头宽度自适应

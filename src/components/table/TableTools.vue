@@ -8,6 +8,7 @@
                 size="mini" 
                 type="success" 
                 icon="el-icon-plus"
+                @click="newItem()"
             >New</el-button>
             <el-button 
                 v-if="buttonVisible.importButton" 
@@ -15,6 +16,7 @@
                 size="mini" 
                 type="primary" 
                 icon="el-icon-upload2"
+                @click="importVisible = true"
             >Import</el-button>
             <el-button 
                 v-if="buttonVisible.editButton" 
@@ -22,6 +24,7 @@
                 size="mini" 
                 type="warning" 
                 icon="el-icon-edit"
+                @click="updateTable()"
             >Edit</el-button>
             <el-button 
                 v-if="buttonVisible.deleteButton" 
@@ -85,6 +88,20 @@
                 circle
             ></el-button>
         </el-popover>
+        <!-- 导入数据对话框 -->
+        <el-dialog 
+            title="Import" 
+            :visible.sync="importVisible"
+            width="480px"
+        >
+        <el-upload :action="uploadApi">
+            <el-button type="success">Upload Template</el-button>
+            <el-button size="mini" type="text" @click="downloadTemplate()">Download Template</el-button>
+        </el-upload>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="importVisible = false" icon="el-icon-close">Close</el-button>  
+        </div>         
+        </el-dialog>
     </div> 
 </template>
 
@@ -97,6 +114,8 @@ export default {
     name: 'TableTools',
     data() {
         return {
+            //导入对话框是否可见
+            importVisible: false,
             //搜索内容
 			searchContent: '',
             //表格列显隐弹出框
@@ -110,6 +129,8 @@ export default {
         buttonVisible: {
             required: true
         },
+        //上传导入模板的接口地址
+        uploadApi: '',
         //删除表格所选行的接口地址
         deleteApi: '',
         //导出表格的名字
@@ -121,6 +142,41 @@ export default {
         },
     },
     methods: {
+        /**
+        * 新增表格内容
+        * 
+        */
+        newItem() {
+            this.$emit('newDialog')
+        },
+        /**
+        * 下载导入数据的模板
+        * 
+        */
+        downloadTemplate () {
+            window.location.href="/downloadTemplate"
+        },
+        /**
+        * 修改表格内容
+        * 
+        */
+        updateTable() {
+            const selectedRows = this.$store.state.tableList.selectedRows
+            if (selectedRows.length === 0) {
+                this.$message({
+                    message: 'Please select one item to edit!',
+                    type: 'warning'
+                });
+                return false;
+            }  else if (selectedRows.length > 1) {
+                this.$message({
+                    message: 'Only one item is allowed to edit at a time!',
+                    type: 'warning'
+                });
+                return false;
+            }
+            this.$emit('editDialog')
+        },
         /**
         * 批量删除表格选中的行
         * 
