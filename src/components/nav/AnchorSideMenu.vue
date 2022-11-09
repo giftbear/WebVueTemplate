@@ -18,10 +18,10 @@
         </el-menu-item-group>
         </div>-->
         <div v-for="(item,index) in sideMenuList" :key="item.id">
-            <el-submenu v-if="item.secondtitle.length>0" :index="item.id">
+            <el-submenu v-if="item.secondtitle.length>0" :index="item.id" class="menu-item">
                 <span slot="title">{{item.firstitle}}</span>    
                 <el-menu-item-group v-for="(temp,index) in item.secondtitle" :key="temp.id">
-                    <el-menu-item :index="temp.id">
+                    <el-menu-item :index="temp.id" class="menu-item">
                         <span>{{temp.title}}</span>
                     </el-menu-item>
                 </el-menu-item-group>
@@ -72,6 +72,9 @@ export default {
 </script>
 
 <style scoped>
+.menu-item {
+    box-shadow: 0 4px 12px 0 #F2F6FC;
+}
 .el-menu-item.is-active {
     border-right: solid 3px #409EFF;
 }

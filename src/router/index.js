@@ -1,34 +1,87 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from "@/views/Login"
-import Register from "@/views/Register"
-import Document from "@/views/Document"
-import Task from "@/views/Task"
-
 Vue.use(Router)
 
 export default new Router({
     routes: [
         {
-            path: '/Login',
+            path: '/',
+            name:'Home',
+            component: () => import("@/views/Home"),
+            meta: { title: 'Home' }
+        },
+        {
+            path: '/login',
             name:'Login',
-            component: Login,
+            component: () => import("@/views/Login"),
+            meta: { title: 'Sign in' }
         },
         {
-            path: '/Register',
+            path: '/register',
             name:'Register',
-            component: Register,
-        },
+            component: () => import("@/views/Register"),
+            meta: { title: 'Sign up' }
+        },   
         {
-            path: '/Document',
+            path: '/repository',
+            name:'Repository',
+            component: () => import("@/views/Repository"),
+            meta: {
+                title: 'Repository',
+                activeMenu: 'Repository'
+				// requireAuth: true,
+			}
+        },   
+        {
+            path: '/console',
+            name:'Console',
+            component: () => import("@/views/Console"),
+            redirect: '/task',
+            meta: { 
+                title: 'Console',   
+                activeMenu: 'Console'
+                // requireAuth: true, //是否需要登录才能访问该页面                    
+            },
+            children: [
+                {
+                    path: '/task',
+                    name:'Task',
+                    component: () => import("@/views/Console/Task"),
+                    meta: { 
+                        title: 'Task',
+                        activeMenu: 'Console',
+                    }
+                },  
+                {
+                    path: '/cflow',
+                    name:'Cflow',
+                    component: () => import("@/views/Console/Cflow"),
+                    meta: { 
+                        title: 'Flow',
+                        activeMenu: 'Console',
+                    }
+                }, 
+                {
+                    path: '/dataset',
+                    name:'Dataset',
+                    component: () => import("@/views/Console/Dataset"),
+                    meta: { 
+                        title: 'Dataset',
+                        activeMenu: 'Console',
+                    }
+                }, 
+            ]
+        },      
+        {
+            path: '/document',
             name:'Document',
-            component: Document,
-        },
-        {
-            path: '/Task',
-            name:'Task',
-            component: Task,
+            component: () => import("@/views/Document"),
+            meta: {
+                title: 'Document',
+                activeMenu: 'Document'
+				// requireAuth: true,
+			}
         },
     ]
 })

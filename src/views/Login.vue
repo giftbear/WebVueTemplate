@@ -67,6 +67,26 @@ data() {
 		loginBtnLoading: false //登录按钮的加载状态
 	}
 },
+computed: {
+	url() {
+		let _url = this.$route.query.Rurl //获取路由前置守卫中next函数的参数,即登录后要去的页面
+		return _url
+			? { path: _url }
+			: { name: 'Home' } //若登录之前有页面,则登录后仍然进入该页面
+	},
+},
+created() {
+	//用户若已登录,自动跳转到首页
+	if (this.$store.getters.isLogin) {
+		let username = this.$store.getters.username
+		this.$message({
+			message: `${username},you have signed in!`,
+			center: true,
+			type: 'success'
+		})
+		this.$router.replace({ name: 'Home' })
+	}
+},
 methods: {
 	/**
 	* 登录按钮点击事件: 表单验证&用户登录

@@ -1,105 +1,99 @@
 <template>
-<el-container>
-    <el-header>Header</el-header>
-    <el-container>
-        <el-aside width="200px"></el-aside>
-        <el-main>
-            <TableTools
-                :buttonVisible="buttonVisible"
-                :deleteApi="deleteApi"
-                :tableName="tableName"
-                :columnData="columnData"               
-                @getTable="getTable"
-                @getSearchTable="getSearchTable"    
-                @newDialog="newVisible = true"   
-                @editDialog="editDialog"         
-            ></TableTools>
-            <Table 
-                :tableData="tableData" 
-                :columnData="columnData"
-                :pageData="pageData"
-                :loading.sync="loading"
-                @getTable="getTable"
-            ></Table> 
-            <el-dialog 
-                title="New Task" 
-                :visible.sync="newVisible"
-                width="580px"
-                @close="closeNew"
-            >
-                <el-form
-                    :model="newform"
-                    :rules="formRules"
-                    ref="newForm"
-                    size="mini"
-                    label-position="top"
-                >
-                    <el-form-item label="Task ID" prop="taskId">
-                        <el-input v-model="newform.taskId"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Task Name" prop="taskName">
-                        <el-input v-model="newform.taskName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Task File" prop="taskFile">
-                        <el-select v-model="taskFileList.name" placeholder="Please select file">
-                            <el-option v-for="item in taskFileList" :key="item.id" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
-                    </el-form-item> 
-                    <el-form-item label="Task Flow" prop="taskFlow">
-                        <el-select v-model="taskFlowList.name" placeholder="Please select flow">
-                            <el-option v-for="item in taskFlowList" :key="item.id" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-			        <el-button @click="closeNew">Cancel</el-button>
-			        <el-button type="primary" @click="submitForm('newForm')">OK</el-button>
-		        </div>
-            </el-dialog>  
-            <el-dialog 
-                title="Edit Task" 
-                :visible.sync="editVisible"
-                width="580px"
-                @close="closeEdit"
-            >
-                <el-form
-                    :model="editform"
-                    :rules="formRules"
-                    ref="editForm"
-                    size="mini"
-                    label-position="top"
-                >
-                    <el-form-item label="Task ID" prop="taskId">
-                        <el-input v-model="editform.taskId"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Task Name" prop="taskName">
-                        <el-input v-model="editform.taskName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Task File" prop="taskFile">
-                        <el-select v-model="taskFileList.name" placeholder="Please select file">
-                            <el-option v-for="item in taskFileList" :key="item.id" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
-                    </el-form-item> 
-                    <el-form-item label="Task Flow" prop="taskFlow">
-                        <el-select v-model="taskFlowList.name" placeholder="Please select flow">
-                            <el-option v-for="item in taskFlowList" :key="item.id" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-			        <el-button @click="closeEdit">Cancel</el-button>
-			        <el-button type="primary" @click="updateForm('editForm')">OK</el-button>
-		        </div>
-            </el-dialog>                
-        </el-main>    
-    </el-container>
-</el-container>
+<div>
+    <TableTools       
+        :buttonVisible="buttonVisible"
+        :deleteApi="deleteApi"
+        :tableName="tableName"
+        :columnData="columnData"               
+        @getTable="getTable"
+        @getSearchTable="getSearchTable"    
+        @newDialog="newVisible = true"   
+        @editDialog="editDialog"         
+    ></TableTools>
+    <Table
+        :tableData="tableData" 
+        :columnData="columnData"
+        :pageData="pageData"
+        :loading.sync="loading"
+        @getTable="getTable"
+    ></Table> 
+    <el-dialog 
+        title="New Task" 
+        :visible.sync="newVisible"
+        width="580px"
+        @close="closeNew"
+    >
+        <el-form
+            :model="newform"
+            :rules="formRules"
+            ref="newForm"
+            size="mini"
+            label-position="top"
+        >
+            <el-form-item label="Task ID" prop="taskId">
+                <el-input v-model="newform.taskId" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="Task Name" prop="taskName">
+                <el-input v-model="newform.taskName"></el-input>
+            </el-form-item>
+            <el-form-item label="Task File" prop="taskFile">
+                <el-select v-model="taskFileList.name" placeholder="Please select file">
+                    <el-option v-for="item in taskFileList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                </el-select>
+            </el-form-item> 
+            <el-form-item label="Task Flow" prop="taskFlow">
+                <el-select v-model="taskFlowList.name" placeholder="Please select flow">
+                    <el-option v-for="item in taskFlowList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeNew">Cancel</el-button>
+            <el-button type="primary" @click="submitForm('newForm')">OK</el-button>
+        </div>
+    </el-dialog>  
+    <el-dialog 
+        title="Edit Task" 
+        :visible.sync="editVisible"
+        width="580px"
+        @close="closeEdit"
+    >
+        <el-form
+            :model="editform"
+            :rules="formRules"
+            ref="editForm"
+            size="mini"
+            label-position="top"
+        >
+            <el-form-item label="Task ID" prop="taskId">
+                <el-input v-model="editform.taskId" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="Task Name" prop="taskName">
+                <el-input v-model="editform.taskName"></el-input>
+            </el-form-item>
+            <el-form-item label="Task File" prop="taskFile">
+                <el-select v-model="taskFileList.name" placeholder="Please select file">
+                    <el-option v-for="item in taskFileList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                </el-select>
+            </el-form-item> 
+            <el-form-item label="Task Flow" prop="taskFlow">
+                <el-select v-model="taskFlowList.name" placeholder="Please select flow">
+                    <el-option v-for="item in taskFlowList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeEdit">Cancel</el-button>
+            <el-button type="primary" @click="updateForm('editForm')">OK</el-button>
+        </div>
+    </el-dialog>   
+</div>             
 </template>
 
 <script>
 import TableTools from "@/components/table/TableTools"
 import Table from "@/components/table/Table"
-import { getTask, searchTask, newTask, editTask } from "@/request/task"
+import { getTask, searchTask, newTask, editTask } from "@/request/console"
 
 export default {
     data() {
@@ -327,25 +321,3 @@ export default {
     },
 }
 </script>
-
-<style lang="stylus">
-.el-dialog__header {
-    background-color: #4F7DE2;
-    .el-dialog__title {
-        color: #fff;
-    }
-}
-/*滚动条样式*/
-::-webkit-scrollbar {
-    width: 8px; 
-    height: 8px;
-}
-::-webkit-scrollbar-thumb {
-    background-color: #409EFF;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-    background-color: #ecf5ff;
-    border-radius: 10px;         
-}
-</style>

@@ -1,13 +1,14 @@
 <template>
-<el-container>
-    <el-header>Header</el-header>
     <el-container>
         <el-aside width="200px">
             <AnchorSideMenu @toParentId="toContent" :sideMenuList="sideMenuList" :anchorId="anchorId"></AnchorSideMenu>
         </el-aside>
         <el-main>
             <div ref="mcontent" class="mcontent">
-                <div class="acontent" id="">
+                <div class="acontent" id="x">
+                    <h3>Single cell sequencing</h3>
+                    <h4>10X Genomics</h4>
+                    <img :src="xUrl" width="800" />              
                 </div>       
                 <div class="acontent" id="">
                 </div>
@@ -16,7 +17,6 @@
             </div>
         </el-main>    
     </el-container>
-</el-container>
 </template>
  
 <script>
@@ -28,21 +28,16 @@ data() {
         //导航菜单列表
         sideMenuList: [
             {
-                firstitle: 'sample',
-                id: 'sample',
-                secondtitle: []
-            },
-            {
-                firstitle: 'apple',
-                id: 'apple',
+                firstitle: 'Single cell sequencing',
+                id: 'scs',
                 secondtitle: [
-                    {title: 'banana',id: 'banana'},
-                    {title: 'cat',id: 'cat'}
+                    {title: '10X Genomics',id: 'x'}
                 ]
             }
         ],
         //锚点Id
         anchorId: null,
+        xUrl: require('@/assets/document/10X_Genomics.png'),
     }
 },
 components: {
@@ -113,27 +108,15 @@ destroy() {
 <style lang="stylus" scoped>
 .el-aside {
     position: fixed;
-    top: 60px;
-    height: calc(100vh - 60px);
+    top: 80px;
+    height: calc(100vh - 80px);
 }
 .mcontent {
     position: absolute;
     left: 220px;
-    top: 60px;
-    height: calc(100vh - 60px);
+    top: 80px;
+    height: calc(100vh - 80px);
     width: calc(100% - 220px);
     overflow-y: auto;
-}
-/*滚动条样式*/
-::-webkit-scrollbar {
-    width: 8px; 
-}
-::-webkit-scrollbar-thumb {
-    background-color: #409EFF;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-    background-color: #ecf5ff;
-    border-radius: 10px;         
 }
 </style>

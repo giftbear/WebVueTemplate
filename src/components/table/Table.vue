@@ -6,7 +6,7 @@
                 ref="tableDemo"
                 id="tabledemo"
                 :data="tableData"
-                size="mini"            
+                size="mini"       
                 :header-cell-style="{'background-color':'#ecf5ff','color':'#409EFF'}"
                 @selection-change="handleSelectRow"
             >
@@ -51,7 +51,7 @@ export default {
     name: 'Table',
     // data() {
     //     return {
-    //         tableHeight: 300
+    //         tableHeight: 400
     //     }
     // },   
     //父组件向子组件传值
@@ -79,9 +79,9 @@ export default {
     //     //表格高度屏幕自适应
     //     this.$nextTick(()=>{
     //         // this.$refs.tableDemo.$el.getBoundingClientRect().top           
-    //         this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 80     
+    //         this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 60     
     //         window.onresize = ()=>{
-    //             this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 80
+    //             this.tableHeight = window.innerHeight - this.$refs.tableDemo.$el.offsetTop - 60
     //         }
     //     })
     // },
