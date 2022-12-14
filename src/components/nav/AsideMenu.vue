@@ -11,7 +11,7 @@
         :route="{ name: 'Task' }"
         class="menu-item"
       >
-        <i class="el-icon-data-analysis"></i>
+        <i class="el-icon-monitor"></i>
         <span slot="title">Task</span>
       </el-menu-item>
       <el-menu-item
@@ -30,6 +30,33 @@
         <i class="el-icon-files"></i>
         <span slot="title">Dataset</span>
       </el-menu-item>
+      <el-submenu index="Metadata" class="menu-item">
+        <template slot="title">
+          <i class="el-icon-document"></i>
+          <span slot="title">Metadata</span>
+        </template>
+        <el-menu-item
+          index="Individual"
+          :route="{ name: 'Individual' }"
+        >
+          <i class="el-icon-s-custom"></i>
+          <span slot="title">Individual Info</span>
+        </el-menu-item>
+        <el-menu-item
+          index="Experiment"
+          :route="{ name: 'Experiment' }"
+        >
+          <i class="el-icon-s-order"></i>
+          <span slot="title">Experiment Info</span>
+        </el-menu-item>
+        <el-menu-item
+          index="Analysis"
+          :route="{ name: 'Analysis' }"     
+        >
+          <i class="el-icon-s-platform"></i>
+          <span slot="title">Analysis Info</span>
+        </el-menu-item>  
+      </el-submenu>
     </el-menu>	
 		<!-- 展开 & 收缩分类栏 -->
 		<el-tooltip

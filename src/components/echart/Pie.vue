@@ -23,7 +23,7 @@ export default {
         drawPie() {
             for(var i=0; i<this.filterList.length; i++){
                 let new_data = this.filterList[i].options
-                let pieId = this.filterList[i].id          
+                let pieId = this.filterList[i].id        
                 this.$echarts.init(document.querySelector('#'+ pieId)).setOption({
                     title: {
                         text: this.filterList[i].title,

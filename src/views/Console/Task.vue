@@ -3,13 +3,34 @@
     <TableTools       
         :buttonVisible="buttonVisible"
         :deleteApi="deleteApi"
-        :tableName="tableName"
-        :columnData="columnData"               
+        :tableName="tableName"               
         @getTable="getTable"
         @getSearchTable="getSearchTable"    
-        @newDialog="newVisible = true"   
+        @newDialog="newDialog"   
         @editDialog="editDialog"         
     ></TableTools>
+    <div class="operation-wrapper">
+        <el-button-group>
+            <el-button
+                title="Run" 
+                size="mini" 
+                type="primary" 
+                icon="el-icon-caret-right"
+            ></el-button>
+            <el-button
+                title="Terminate" 
+                size="mini" 
+                type="primary" 
+                icon="el-icon-video-pause"
+            ></el-button>
+            <el-button
+                title="Rerun" 
+                size="mini" 
+                type="primary" 
+                icon="el-icon-refresh-right"
+            ></el-button>
+        </el-button-group>
+    </div>
     <Table
         :tableData="tableData" 
         :columnData="columnData"
@@ -30,20 +51,20 @@
             size="mini"
             label-position="top"
         >
-            <el-form-item label="Task ID" prop="taskId">
+            <el-form-item label="Task ID" prop="taskId" required>
                 <el-input v-model="newform.taskId" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="Task Name" prop="taskName">
                 <el-input v-model="newform.taskName"></el-input>
             </el-form-item>
             <el-form-item label="Task File" prop="taskFile">
-                <el-select v-model="taskFileList.name" placeholder="Please select file">
-                    <el-option v-for="item in taskFileList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                <el-select v-model="newform.taskFile" placeholder="Please select file">
+                    <el-option v-for="(item,index) in taskFileList" :label="item.datasetName" :value="item.datasetName" :key="index"></el-option>
                 </el-select>
             </el-form-item> 
             <el-form-item label="Task Flow" prop="taskFlow">
-                <el-select v-model="taskFlowList.name" placeholder="Please select flow">
-                    <el-option v-for="item in taskFlowList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                <el-select v-model="newform.taskFlow" placeholder="Please select flow">
+                    <el-option v-for="(item,index) in taskFlowList" :label="item.pipelineName" :value="item.pipelineName" :key="index"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -65,20 +86,20 @@
             size="mini"
             label-position="top"
         >
-            <el-form-item label="Task ID" prop="taskId">
+            <el-form-item label="Task ID" prop="taskId" required>
                 <el-input v-model="editform.taskId" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="Task Name" prop="taskName">
                 <el-input v-model="editform.taskName"></el-input>
             </el-form-item>
             <el-form-item label="Task File" prop="taskFile">
-                <el-select v-model="taskFileList.name" placeholder="Please select file">
-                    <el-option v-for="item in taskFileList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                <el-select v-model="editform.taskFile" placeholder="Please select file">
+                    <el-option v-for="(item,index) in taskFileList" :label="item.datasetName" :value="item.datasetName" :key="index"></el-option>
                 </el-select>
             </el-form-item> 
             <el-form-item label="Task Flow" prop="taskFlow">
-                <el-select v-model="taskFlowList.name" placeholder="Please select flow">
-                    <el-option v-for="item in taskFlowList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                <el-select v-model="editform.taskFlow" placeholder="Please select flow">
+                    <el-option v-for="(item,index) in taskFlowList" :label="item.pipelineName" :value="item.pipelineName" :key="index"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -93,7 +114,7 @@
 <script>
 import TableTools from "@/components/table/TableTools"
 import Table from "@/components/table/Table"
-import { getTask, searchTask, newTask, editTask } from "@/request/console"
+import { getTask, searchTask, newTask, editTask, generateID } from "@/request/console"
 
 export default {
     data() {
@@ -106,7 +127,6 @@ export default {
                 deleteButton: true,
                 searchButton: true,
                 exportButton: true,
-                arrangeButton: true,
             },
             //新增对话框是否可见
             newVisible: false,
@@ -120,18 +140,21 @@ export default {
             newform: {
                 taskId: '',
                 taskName: '',
+                taskFile: '',
+                taskFlow: '',
             },
             //修改表单
             editform: {
                 taskId: '',
                 taskName: '',
+                taskFile: '',
+                taskFlow: '',
             },
             //表单校验规则
             formRules: {
-                taskId: [{ required: true, message: 'Please input task ID!', trigger: 'blur' }],
                 taskName: [{ required: true, message: 'Please input task name!', trigger: 'blur' }],
-                taskFile: [{ required: false, message: 'Please select file!', trigger: 'change' }],
-                taskFlow: [{ required: false, message: 'Please select flow!', trigger: 'change' }],
+                taskFile: [{ required: true, message: 'Please select file!', trigger: 'change' }],
+                taskFlow: [{ required: true, message: 'Please select flow!', trigger: 'change' }],
             },
             //删除表格所选行的接口地址
             deleteApi: '/task/deleteTask',
@@ -198,6 +221,20 @@ export default {
         this.getTaskFlow()
     },
     methods: {
+        /**
+        * 新增数据
+        * 
+        */
+        newDialog() {
+            generateID().then((res) => {
+                if (res.success) {
+                    this.newform.taskId = res.data.uid
+                    this.newVisible = true                                   
+                } else {
+                    this.$message.error(res.message)
+                }
+            })
+        },
         /**
         * 获取新增任务文件列表
         * 
@@ -321,3 +358,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.operation-wrapper {
+    padding: 0 10px 16px 10px;
+}
+</style>

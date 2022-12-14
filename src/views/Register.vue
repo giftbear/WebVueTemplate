@@ -94,7 +94,7 @@ methods: {
 					type: 'success'
 				})
 				this.$refs[formName].resetFields() //清空表单
-				this.$router.replace({ path: '/Login' }) //跳转到登录页面				
+				this.$router.replace({ path: '/login' }) //跳转到登录页面				
 			} else {
 				this.$message.error(res.message)
 			}

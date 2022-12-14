@@ -6,18 +6,6 @@ import tableList from './module/tableList' //表格列表模块
 
 Vue.use(Vuex)
 
-const allColumnList = [	
-	"taskId",
-	"taskName",	
-	"taskFile",
-	"taskFlow",	
-	"taskStatus",
-	"taskRunStatus",	
-	"taskBegainTime",	
-	"taskEndTime",
-	"taskResultUrl"
-]
-
 export default new Vuex.Store({
 	state: {
 		

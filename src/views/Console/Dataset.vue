@@ -3,11 +3,10 @@
         <TableTools       
             :buttonVisible="buttonVisible"
             :deleteApi="deleteApi"
-            :tableName="tableName"
-            :columnData="columnData"               
+            :tableName="tableName"             
             @getTable="getTable"
             @getSearchTable="getSearchTable"    
-            @newDialog="newDialog"   
+            @newDialog="newVisible=true"   
             @editDialog="editDialog"         
         ></TableTools>
         <Table
@@ -17,6 +16,16 @@
             :loading.sync="loading"
             @getTable="getTable"
         ></Table> 
+        <el-dialog
+            title="Confirmation"
+            :visible.sync="newVisible"
+        >
+            <span>You will jump to repository page to select files to create dataset!</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="newVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="$router.push({name: 'Repository'})">OK</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -27,7 +36,7 @@ import { getDataset, searchDataset } from "@/request/console"
 
 export default {
     data() {
-        return {
+        return {         
             //表格工具
             buttonVisible: {
                 newButton: true,
@@ -36,7 +45,6 @@ export default {
                 deleteButton: true,
                 searchButton: true,
                 exportButton: true,
-                arrangeButton: true,
             },
             //删除表格所选行的接口地址
             deleteApi: '/dataset/deleteDataset',
@@ -67,6 +75,8 @@ export default {
             },
             //表格加载状态
             loading: true,
+            //新增对话框是否可见
+            newVisible: false,
         }
     },
     components: {
@@ -77,9 +87,10 @@ export default {
         this.getTable()
     },
     methods: {
-        newDialog() {
-
-        },
+        /**
+        * 编辑表格数据
+        * 
+        */
         editDialog() {
 
         },

@@ -26,6 +26,7 @@
         >
             <el-checkbox-group 
                 v-model="checkedOptions"
+                @change="changeCheckbox"
             >
                 <div v-for="temp in item.options" class="item">
                     <el-checkbox :label="temp.id" :key="temp.id">{{ temp.name }}</el-checkbox>
@@ -76,13 +77,21 @@ export default {
 				this.$emit('getSearchTable', value)
 			}
 		},
+        /**
+		* 多选框状态发生变化时的事件
+		* @param {[]} val 多选框选中的值列表
+		*/
+        changeCheckbox(val) {
+            
+
+        },
     },
 }
 </script>
 
 <style lang="stylus" scoped>
->>>.el-collapse-item__header {
-    background: #d3e8f2;
+>>>.el-collapse-item__header {  
+    background-image: linear-gradient(190deg, #fdfeff, #e5f6ff);
     color: #606266;
     border: none;
     padding-left: 20px;  
@@ -107,7 +116,7 @@ export default {
     padding: 2px 0;
     .item-count {
         margin-left: auto;
-        background-color: #ecf5ff;
+        background-image: linear-gradient(190deg, #fdfeff, #e5f6ff);
         color: #409EFF;
         font-size: 12px;       
         height: 20px;

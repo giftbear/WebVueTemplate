@@ -21,7 +21,7 @@
             <el-submenu v-if="item.secondtitle.length>0" :index="item.id" class="menu-item">
                 <span slot="title">{{item.firstitle}}</span>    
                 <el-menu-item-group v-for="(temp,index) in item.secondtitle" :key="temp.id">
-                    <el-menu-item :index="temp.id" class="menu-item">
+                    <el-menu-item :index="temp.id">
                         <span>{{temp.title}}</span>
                     </el-menu-item>
                 </el-menu-item-group>

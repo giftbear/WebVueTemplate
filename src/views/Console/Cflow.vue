@@ -3,8 +3,7 @@
         <TableTools       
             :buttonVisible="buttonVisible"
             :deleteApi="deleteApi"
-            :tableName="tableName"
-            :columnData="columnData"               
+            :tableName="tableName"              
             @getTable="getTable"
             @getSearchTable="getSearchTable"    
             @newDialog="newDialog"   
@@ -36,7 +35,6 @@ export default {
                 deleteButton: true,
                 searchButton: true,
                 exportButton: true,
-                arrangeButton: true,
             },
             //删除表格所选行的接口地址
             deleteApi: '/flow/deleteFlow',
@@ -77,9 +75,17 @@ export default {
         this.getTable()
     },
     methods: {
+        /**
+        * 新增表格数据
+        * 
+        */
         newDialog() {
 
         },
+        /**
+        * 编辑表格数据
+        * 
+        */
         editDialog() {
 
         },

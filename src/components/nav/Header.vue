@@ -9,6 +9,7 @@
 			router
 		>
       <el-menu-item index="Repository" :route="{ name: 'Repository' }">Repository</el-menu-item>
+      <el-menu-item index="Pipeline" :route="{ name: 'Pipeline' }">Pipeline</el-menu-item>
       <el-menu-item index="Console" :route="{ name: 'Console' }">Console</el-menu-item>
       <el-menu-item index="Document" :route="{ name: 'Document' }">Document</el-menu-item>
       <el-submenu class="user" index="user">

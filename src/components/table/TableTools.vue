@@ -2,6 +2,19 @@
     <div class="table-tools-wrapper">
         <!-- 左边工具栏:增导改删 -->
         <div class="basic-tools">
+            <el-dropdown>
+            <el-button
+                v-if="buttonVisible.cartButton"
+                title="Cart" 
+                size="mini" 
+                type="primary" 
+                icon="el-icon-shopping-cart-2"
+            ></el-button>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="addFile()">Add Files</el-dropdown-item>
+                <el-dropdown-item @click.native="cartVisible=true">Cart</el-dropdown-item>
+            </el-dropdown-menu>
+            </el-dropdown>
             <el-button 
                 v-if="buttonVisible.newButton" 
                 title="New" 
@@ -65,7 +78,7 @@
                 <el-dropdown-item>Export Selected</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
-        <el-popover v-model="popoverVisible">
+        <!-- <el-popover v-model="popoverVisible">
             <div style="font-size:8px;">Arrange Columns<el-divider></el-divider></div>
             <el-checkbox-group v-model="selectedColumn">
                 <div v-for="item in columnData">
@@ -87,7 +100,7 @@
                 icon="el-icon-menu" 
                 circle
             ></el-button>
-        </el-popover>
+        </el-popover> -->
         <!-- 导入数据对话框 -->
         <el-dialog 
             title="Import" 
@@ -97,10 +110,44 @@
         <el-upload :action="uploadApi">
             <el-button type="success">Upload Template</el-button>
             <el-button size="mini" type="text" @click="downloadTemplate()">Download Template</el-button>
+            <div slot="tip" style="margin-top:15px"><i class="el-icon-s-opportunity" style="color:#e6a23c"></i>
+            You can download the template first to fill the content and then upload the completed template to complete import data.</div>
         </el-upload>
         <div slot="footer" class="dialog-footer">
             <el-button @click="importVisible = false" icon="el-icon-close">Close</el-button>  
         </div>         
+        </el-dialog>
+        <el-dialog 
+            title="Cart" 
+            :visible.sync="cartVisible"
+            width="580px"
+        ><el-table :data="cartData" size="mini">
+            <el-table-column prop="fileName" label="File"></el-table-column>
+            <el-table-column label="Operation">
+                <template slot-scope="scope">
+                    <el-button title="Delete" type="text" icon="el-icon-circle-close" style="color:#F56C6C"></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="danger" size="mini" @click="">Clear Cart</el-button>
+            <el-button type="success" size="mini" @click="newVisible=true">Create Dataset</el-button>
+            <el-button type="primary" size="mini" @click="">Download</el-button>
+        </div>
+        </el-dialog>
+        <el-dialog title="Create Dataset" :visible.sync="newVisible" width="580px" @close="closeNew">
+        <el-form :model="newform" :rules="formRules" ref="newForm" label-position="top" size="mini">
+            <el-form-item label="Dataset ID" prop="datasetId">
+                <el-input v-model="newform.datasetId"></el-input>
+            </el-form-item>
+            <el-form-item label="Dataset Name" prop="datasetName">
+                <el-input v-model="newform.datasetName"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeNew">Cancel</el-button>
+            <el-button type="primary" @click="submitForm('newForm')">OK</el-button>
+        </div>
         </el-dialog>
     </div> 
 </template>
@@ -114,15 +161,31 @@ export default {
     name: 'TableTools',
     data() {
         return {
+            //购物车对话框是否可见
+            cartVisible: false,
+            //创建数据集对话框是否可见
+            newVisible: false,
             //导入对话框是否可见
             importVisible: false,
             //搜索内容
 			searchContent: '',
             //表格列显隐弹出框
-            popoverVisible: false,
+            // popoverVisible: false,
             //表格被选中的列
-            selectedColumn: this.$store.getters.selectedColumnList,           
-        }
+            // selectedColumn: this.$store.getters.selectedColumnList,
+            //购物车中的数据
+            cartData: [],
+            //新增数据集表单
+            newform: {
+                datasetId: '',
+                datasetName: '',
+            },
+            //新增表单验证规则
+            formRules: {
+                datasetId: [{ required: true, message: 'Please input dataset ID!', trigger: 'blur' }],
+                datasetName: [{ required: true, message: 'Please input dataset Name!', trigger: 'blur' }],    
+            },
+        }     
     },
     props: {
         //表格工具的控制
@@ -136,12 +199,56 @@ export default {
         //导出表格的名字
         tableName: '',
         //表格列显隐的筛选项
-        columnData: {
-            type: Array,
-            required: true
-        },
+        // columnData: {
+        //     type: Array,
+        //     required: true
+        // },
     },
     methods: {
+        /**
+        * 添加/下载数据集到购物车
+        * 
+        */
+        addFile() {
+            const selectedRows = this.$store.state.tableList.selectedRows
+            if (selectedRows.length === 0) {
+                this.$message({
+                    message: 'Please select file to cart!',
+                    type: 'warning'
+                });
+                return false;
+            }
+            // this.cartData = this.$store.state.tableList.selectedRows[0]
+            
+        },
+        /**
+        * 提交新增表单确定按钮事件
+        * @param {string} formName 新增表单ref
+        */
+        submitForm(formName) {          
+            this.$refs[formName].validate((valid)=>{
+                if (valid) {
+                    this.newVisible = false
+                    newDataset(this.newform).then((res) => {                      
+                        if (res.success) {
+                            this.$message.success('Add data successfully!')
+                        } else {
+                            this.$message.error(res.message)
+                        }
+                    })
+                } else {
+                    return false
+                }
+            })            
+        },
+        /**
+        * 关闭新增对话框事件
+        * 
+        */
+        closeNew() {
+            this.$refs['newForm'].resetFields()
+            this.newVisible = false        
+        },
         /**
         * 新增表格内容
         * 
