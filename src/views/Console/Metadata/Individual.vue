@@ -49,7 +49,12 @@
                         <el-date-picker value-format="yyyy-MM-dd" v-model="newform.age"></el-date-picker>
                     </el-form-item>
                 </el-col>
-            </el-form-item>          
+            </el-form-item>   
+            <el-form-item label="Disease Category" prop="diseaseCategory">
+                <el-select v-model="newform.diseaseCategory" placeholder="Please select disease category">
+                    <el-option v-for="(item,index) in diseaseList" :label="item.metaPropName" :value="item.metaPropName" :key="index"></el-option>
+                </el-select>
+            </el-form-item>       
             <el-form-item label="Disease/Symptoms" prop="disease">
                 <el-input type="textarea" v-model="newform.disease"></el-input>
             </el-form-item>
@@ -87,6 +92,11 @@
                         <el-date-picker value-format="yyyy-MM-dd" v-model="editform.age"></el-date-picker>
                     </el-form-item>
                 </el-col>
+            </el-form-item> 
+            <el-form-item label="Disease Category" prop="diseaseCategory">
+                <el-select v-model="editform.diseaseCategory" placeholder="Please select disease category">
+                    <el-option v-for="(item,index) in diseaseList" :label="item.metaPropName" :value="item.metaPropName" :key="index"></el-option>
+                </el-select>
             </el-form-item>          
             <el-form-item label="Disease/Symptoms" prop="disease">
                 <el-input type="textarea" v-model="editform.disease"></el-input>
@@ -159,6 +169,10 @@ export default {
                     prop:"age",
                 },
                 {
+                    label:"Disease Category",
+                    prop:"diseaseCategory",
+                },
+                {
                     label:"Disease/Symptoms",
                     prop:"disease",
                 },
@@ -202,6 +216,7 @@ export default {
                 name: '',
                 gender: '',
                 age: '',
+                diseaseCategory: '',
                 disease: '',
                 treatment: '',
                 survivalTime: '',
@@ -213,6 +228,7 @@ export default {
                 name: '',
                 gender: '',
                 age: '',
+                diseaseCategory: '',
                 disease: '',
                 treatment: '',
                 survivalTime: '',
@@ -223,10 +239,13 @@ export default {
                 name: [{ required: true, message: 'Please input name!', trigger: 'blur' }],
                 gender: [{ required: true, message: 'Please select gender!', trigger: 'change' }],
                 age: [{ required: true, message: 'Please select birth date!', trigger: 'change' }],
+                diseaseCategory: [{ required: true, message: 'Please select disease category!', trigger: 'change' }],
                 disease: [{ required: true, message: 'Please input disease or symptoms!', trigger: 'blur' }]
             },
             //性别选项列表
             genderList: [],
+            //疾病分类列表
+            diseaseList: [],
         }
     },
     created() {
@@ -270,12 +289,17 @@ export default {
             getOptions().then((res) => {
                 if (res.success) {
                     let _arr = []
+                    let _arr1 = []
                     for(var i in res.data.option){
                         if(res.data.option[i].metaName == "Gender"){
                             _arr.push(res.data.option[i])
                         }
+                        if(res.data.option[i].metaName == "Disease Category"){
+                            _arr1.push(res.data.option[i])
+                        }
                     }
-                    this.genderList = _arr                   
+                    this.genderList = _arr  
+                    this.diseaseList = _arr1                 
                 } else {
                     this.$message.error(res.message)
                 }

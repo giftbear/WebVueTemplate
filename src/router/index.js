@@ -29,8 +29,8 @@ export default new Router({
             component: () => import("@/views/Repository"),
             meta: {
                 title: 'Repository',
-                activeMenu: 'Repository'
-				// requireAuth: true, //是否需要登录才能访问该页面
+                activeMenu: 'Repository',
+				requireAuth: true, //是否需要登录才能访问该页面
 			}
         },  
         {
@@ -39,8 +39,8 @@ export default new Router({
             component: () => import("@/views/Pipeline"),
             meta: {
                 title: 'Pipeline',
-                activeMenu: 'Pipeline'
-				// requireAuth: true, 
+                activeMenu: 'Pipeline',
+				requireAuth: true, 
 			}
         },  
         {
@@ -50,8 +50,8 @@ export default new Router({
             redirect: '/task',
             meta: { 
                 title: 'Console',   
-                activeMenu: 'Console'
-                // requireAuth: true,                     
+                activeMenu: 'Console',
+                requireAuth: true,                     
             },
             children: [
                 {
@@ -116,8 +116,8 @@ export default new Router({
             component: () => import("@/views/Document"),
             meta: {
                 title: 'Document',
-                activeMenu: 'Document'
-				// requireAuth: true,
+                activeMenu: 'Document',
+				requireAuth: true,
 			}
         },
     ]

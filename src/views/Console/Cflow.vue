@@ -6,7 +6,7 @@
             :tableName="tableName"              
             @getTable="getTable"
             @getSearchTable="getSearchTable"    
-            @newDialog="newDialog"   
+            @newDialog="newVisible=true"   
             @editDialog="editDialog"         
         ></TableTools>
         <Table
@@ -16,6 +16,16 @@
             :loading.sync="loading"
             @getTable="getTable"
         ></Table> 
+        <el-dialog
+            title="Confirmation"
+            :visible.sync="newVisible"
+        >
+            <span>You will jump to pipeline page to create pipeline!</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="newVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="$router.push({name: 'Pipeline'})">OK</el-button>
+            </span>
+        </el-dialog>  
     </div>
 </template>
 
@@ -46,15 +56,15 @@ export default {
             columnData: [
                 {
                     label: "Flow ID",
-                    prop: "flowId",
+                    prop: "pipelineId",
                 },
                 {
                     label: "Flow Name",
-                    prop: "flowName",
+                    prop: "pipelineName",
                 },
                 {
                     label: "Flow Details",
-                    prop: "flowDetails",
+                    prop: "pipelineStep",
                 },
             ],
             //分页数据
@@ -65,6 +75,8 @@ export default {
             },
             //表格加载状态
             loading: true,
+            //新增对话框是否可见
+            newVisible: false,
         }
     },
     components: {

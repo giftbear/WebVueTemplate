@@ -12,6 +12,7 @@
                 @selection-change="handleSelectRow"            
                 :row-style="rowStyle"
                 @row-click="handleRowClick"
+                @cell-mouse-enter="cellEnter"
             >
                 <el-table-column
                     type="selection"
@@ -64,7 +65,9 @@
                 :page-size="pageData.pageCount"
                 :total="pageData.total"
                 :page-sizes="[20, 40, 60, 80, 100]"
-                layout='sizes, prev, pager, next, jumper'                       
+                layout='sizes, prev, pager, next, jumper'  
+                @current-change="handleCurrentChange"
+				@size-change="handleSizeChange"                     
             >
             </el-pagination>
         </div> 
@@ -171,6 +174,23 @@ export default {
         //         }
         //     });
         // },
+        /**
+		 * 表格数据获取相关事件 | 分页组件 | 当前页码改变
+		 */
+		handleCurrentChange(currentPage) {
+			this.pageData.currentPage = currentPage
+			this.$emit('getTable')
+		},
+		/**
+		 * 表格数据获取相关事件 | 分页组件 | 页大小改变时
+		 */
+		handleSizeChange(pageCount) {
+			this.pageData.pageCount = pageCount
+			this.$emit('getTable')
+		},
+        cellEnter(row, column, cell, event){
+   
+        }
     }
 }
 </script>

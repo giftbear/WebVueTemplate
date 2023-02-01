@@ -114,7 +114,7 @@
 <script>
 import TableTools from "@/components/table/TableTools"
 import Table from "@/components/table/Table"
-import { getTask, searchTask, newTask, editTask, generateID } from "@/request/console"
+import { getTask, searchTask, newTask, editTask, generateID, getFiles, getFlows } from "@/request/console"
 
 export default {
     data() {
@@ -240,14 +240,26 @@ export default {
         * 
         */
         getTaskFile() {
-            
+            getFiles().then((res) => {
+                if (res.success) {
+                    this.taskFileList = res.data.list                                           
+                } else {
+                    this.$message.error(res.message)
+                }
+            })            
         },
         /**
         * 获取新增任务流程列表
         * 
         */
         getTaskFlow() {
-            
+            getFlows().then((res) => {
+                if (res.success) {
+                    this.taskFlowList = res.data.list                                           
+                } else {
+                    this.$message.error(res.message)
+                }
+            }) 
         },
         /**
         * 提交新增表单确定按钮事件

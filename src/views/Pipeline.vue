@@ -92,15 +92,16 @@ export default {
         getTable(){
             getFlowTable().then((res) => {
                 if (res.success) {
-                    let arr = []
-                    let _arr = []
-                    for(var i in res.data.list){
-                        if(arr.indexOf(res.data.list[i].pipelineId) == -1){
-                            arr.push(res.data.list[i].pipelineId)
-                            _arr.push(res.data.list[i])
-                        }
-                    } 
-                    this.flowData = _arr  
+                    // let arr = []
+                    // let _arr = []
+                    // for(var i in res.data.list){
+                    //     if(arr.indexOf(res.data.list[i].pipelineId) == -1){
+                    //         arr.push(res.data.list[i].pipelineId)
+                    //         _arr.push(res.data.list[i])
+                    //     }
+                    // } 
+                    // this.flowData = _arr  
+                    this.flowData = res.data.list
                 } else {
                     this.$message.error(res.message)
                 }
@@ -130,13 +131,10 @@ export default {
                 let data ={flow: value}
                 getFlowList(data).then((res) => {
                     if (res.success) {
-                        let _flowList = []
-                        let tempList = res.data.list
-                        for (var i=0; i<tempList.length; i++) {
-                            _flowList.push(tempList[i].pipelineStep)
-                        }                   
-                        this.flowList = _flowList
-                        this.title = tempList[0].pipelineName
+                        let tempList = res.data.list[0].pipelineStep
+                        tempList = tempList.split(";")                           
+                        this.flowList = tempList
+                        this.title = res.data.list[0].pipelineName
                         this.showFlow = true
                     } else {
                         this.$message.error(res.message)

@@ -82,7 +82,7 @@ export default {
 		* @param {[]} val 多选框选中的值列表
 		*/
         changeCheckbox(val) {
-            
+            console.log(val)
 
         },
     },
